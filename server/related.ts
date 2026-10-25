@@ -19,7 +19,8 @@ export interface Scan {
 }
 
 // 路径前缀可以是 ~、$HOME、${HOME}、./、../ 或直接 /；前面必须是分隔符，避免匹配到 URL 中间的片段
-const PATH_TOKEN = /(?:^|[\s"'=(:;&|`])((?:~|\$HOME|\$\{HOME\}|\.{1,2})?\/[A-Za-z0-9_.@+~/-]+)/g;
+// 第一个 / 之后不能紧跟另一个 /，否则 https://host/path 会被当成路径 //host/path
+const PATH_TOKEN = /(?:^|[\s"'=(:;&|`])((?:~|\$HOME|\$\{HOME\}|\.{1,2})?\/(?!\/)[A-Za-z0-9_.@+~/-]+)/g;
 const HOME_PREFIX = /^(?:~|\$HOME|\$\{HOME\})(?=\/|$)/;
 const SEGMENT_SPLIT = /&&|\|\||;|\n/;
 // worktree add/move/remove 里带参数值的选项：解析位置参数时要把它们的值一起跳过

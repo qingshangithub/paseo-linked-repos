@@ -151,12 +151,8 @@ export async function related(input: RpcInput<typeof linkedRelatedRpc>, context:
   for (const scan of all) {
     for (const touch of scan.touches) bump(touch.path, touch.kind);
     for (const op of scan.ops) {
-      if (op.op === "move") {
-        bump(op.from, "managed");
-        bump(op.to, "managed");
-      } else {
-        bump(op.path, "managed");
-      }
+      // move 只记一次（落点），否则一条命令会被算成两次 worktree 操作
+      bump(op.op === "move" ? op.to : op.path, "managed");
     }
   }
   // 剔除检出远端主分支（origin/HEAD，兜底 main/master）的 worktree：agent 常 cd 到主目录
