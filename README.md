@@ -39,7 +39,13 @@ The goal is narrow: when a task spans repositories, show which ones changed and 
 
 ## Install
 
-Requires Paseo 0.13.0 or later and plugins enabled (`"pluginsEnabled": true` in `$PASEO_HOME/config.json`).
+Requires Paseo 0.13.0 or later and plugins enabled (`"pluginsEnabled": true` in `$PASEO_HOME/config.json`, then `paseo reload`).
+
+```bash
+paseo plugin add git:qingshangithub/paseo-linked-repos
+```
+
+To install from a local checkout instead:
 
 ```bash
 git clone git@github.com:qingshangithub/paseo-linked-repos.git
@@ -51,6 +57,16 @@ After changing the source, run `paseo plugin reload linked-repos`.
 Open the panel from the Command Center (`Cmd+K`, then "Open Linked Repos") or from the right-hand Explorer.
 
 > Plugins are trusted, unsandboxed code. The server part runs `git` and reads files on the daemon host. Read the source before installing.
+
+## Development
+
+```bash
+npm ci
+npm run typecheck
+npm test
+```
+
+The tests run `git` against temporary repositories and worktrees, so they exercise the real behaviour of `git worktree list`, `git worktree move`, `origin/HEAD` and merge-bases. The Paseo daemon API used by the handlers is replaced with a small fake. The panel UI itself has no automated tests; it is checked by hand in the app.
 
 ## Layout
 
@@ -69,3 +85,8 @@ shared/            RPC contracts shared by both runtimes
 - Syntax highlighting and inline word diffs are not available to plugins.
 - Two worktrees of the same repository get tabs with the same title.
 - Tested against Paseo 0.13.0 only.
+- `paseo plugin add git:...` installs from a Git clone on the daemon host, so that host needs access to GitHub.
+
+## License
+
+MIT

@@ -1,5 +1,13 @@
 {
   "id": "linked-repos",
+  "name": "Linked repos",
+  "description": "Shows which repositories and worktrees a task changed, and what changed in each.",
+  "translations": {
+    "zh-CN": {
+      "name": "关联仓库",
+      "description": "查看一个任务改动了哪些仓库和 worktree，以及各自改了什么。"
+    }
+  },
   "requirements": {
     "paseo": ">=0.13.0"
   }
